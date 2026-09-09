@@ -1,6 +1,7 @@
 package job
 
 import (
+	"errors"
 	"time"
 )
 
@@ -39,6 +40,8 @@ func SetStatus(status JobStatus) {
 
 }
 
+var ErrJobNotFound = errors.New("job not found")
+
 func FindJob(
 	jobs []Job,
 	id string,
@@ -52,7 +55,11 @@ func FindJob(
 	return nil
 }
 
-func (j Job) IsFinished() bool {
+func (j *Job) IsFinished() bool {
 	return j.Status == StatusCompleted ||
 		j.Status == StatusFailed
+}
+
+func (j *Job) Complete() {
+	j.Status = StatusCompleted
 }
