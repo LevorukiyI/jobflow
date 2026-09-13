@@ -5,6 +5,8 @@ import "fmt"
 type JobRepository interface {
 	Add(Job) error
 	Get(Job) (Job, error)
+	Delete(string) error
+	List() []Job
 }
 
 type MemoryJobRepository struct {
@@ -29,4 +31,9 @@ func (repository *MemoryJobRepository) Get(
 		)
 	}
 	return job, nil
+}
+
+func (repository *MemoryJobRepository) Add(job Job) error {
+	repository.jobs[job.ID] = job
+	return nil
 }
